@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>픽셀 탐정: 기억 복원 사무소 — 지워진 고스트 프로그램</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'DungGeunMo';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/DungGeunMo.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="scanlines"></div>
+
+  <div id="app">
+
+    <!-- ============ 화면 1: 타이틀 ============ -->
+    <section id="screen-title" class="screen active">
+      <p class="eyebrow">NEO CYBERCITY CASE FILES — GHOST PROGRAM</p>
+      <h1 class="game-title">
+        픽셀 탐정<span class="title-colon">:</span><br>
+        <span class="title-sub-kr">기억 복원 사무소</span>
+      </h1>
+      <p class="game-subtitle">네오 사이버시티를 위협하는 '고스트 프로그램'의 파편을 복원하라</p>
+      <button id="btn-start" class="pixel-btn pixel-btn-primary">사건 조사 시작</button>
+      <p class="title-footnote">CLICK TO ENTER THE OFFICE</p>
+    </section>
+
+    <!-- ============ 화면 2: 난이도 선택 ============ -->
+    <section id="screen-difficulty" class="screen">
+      <p class="eyebrow">사건 접수 전, 탐정의 경력을 등록하세요</p>
+      <h2 class="section-title">코딩 경험을 선택하세요</h2>
+
+      <div class="difficulty-grid">
+        <button class="diff-card" data-level="beginner">
+          <span class="diff-icon">🔰</span>
+          <span class="diff-name">완전 초보자</span>
+          <span class="diff-desc">노베이스 · 자동 스캔 지원</span>
+          <span class="diff-detail">사건 진입 시 1단계 위치 스캔 힌트가 자동 공개됩니다.<br>코드 구조를 직관적으로 읽는 연습부터 시작합니다.</span>
+        </button>
+        <button class="diff-card" data-level="novice">
+          <span class="diff-icon">🕵️</span>
+          <span class="diff-name">입문자</span>
+          <span class="diff-desc">기본 문법 경험 있음 · 단계별 분석</span>
+          <span class="diff-detail">3단계 도움말 버튼을 통해 필요할 때만<br>직접 단서를 하나씩 수집하며 해결합니다.</span>
+        </button>
+      </div>
+
+      <button id="btn-back-title" class="pixel-btn pixel-btn-ghost">뒤로가기</button>
+    </section>
+
+    <!-- ============ 화면 3: 메인 게임플레이 ============ -->
+    <section id="screen-game" class="screen">
+
+      <header class="game-header">
+        <div class="header-title-wrap">
+          <span class="header-title-text">지워진 고스트 프로그램 추적극</span>
+        </div>
+        <div class="header-sub-row">
+          <span class="header-case">CASE 01 / 03</span>
+          <span class="diff-badge" id="diff-badge">입문자</span>
+        </div>
+      </header>
+
+      <div class="office-backdrop">
+        <div class="decor-cabinet"></div>
+        <div class="decor-poster decor-poster-1"><span>GHOST</span></div>
+        <div class="decor-poster decor-poster-2"><span>NULL</span></div>
+        <div class="decor-rain"></div>
+        <div class="decor-lamp-glow"></div>
+      </div>
+
+      <main class="game-main">
+
+        <!-- 좌측: 기억의 파편 (윈도우) -->
+        <section class="window panel-left">
+          <div class="window-titlebar">
+            <span class="window-title">기억의 파편</span>
+            <button class="window-close" title="사건 진행 중에는 닫을 수 없습니다">×</button>
+          </div>
+          <div class="window-body">
+            <p class="case-location" id="case-location">중앙지구 - 카페 '픽셀 빔'</p>
+            <h4 class="case-title" id="case-title">카페 픽셀 빔의 널(Null) 소동</h4>
+
+            <div class="filmstrip">
+              <div class="frame-row">
+                <div class="polaroid" data-stage="0">
+                  <canvas class="frame-canvas" width="140" height="90"></canvas>
+                  <p class="frame-caption"></p>
+                </div>
+                <div class="polaroid" data-stage="1">
+                  <canvas class="frame-canvas" width="140" height="90"></canvas>
+                  <p class="frame-caption"></p>
+                </div>
+              </div>
+              <div class="frame-row frame-row-third">
+                <div class="polaroid" data-stage="2">
+                  <canvas class="frame-canvas" width="140" height="90"></canvas>
+                  <p class="frame-caption"></p>
+                </div>
+              </div>
+            </div>
+
+            <p class="case-client" id="case-client">의뢰인 : 정보상 바리스타 루크</p>
+            <p class="case-memory" id="case-memory">기억 묘사가 여기에 표시됩니다.</p>
+          </div>
+        </section>
+
+        <!-- 우측 상단: 복원 코드 (윈도우) -->
+        <section class="window panel-right">
+          <div class="window-titlebar">
+            <span class="window-title">복원 코드</span>
+            <button class="window-close" title="사건 진행 중에는 닫을 수 없습니다">×</button>
+          </div>
+          <div class="window-body window-body-code">
+            <div class="terminal">
+              <div class="terminal-bar">
+                <span class="dot dot-red"></span><span class="dot dot-yellow"></span><span class="dot dot-green"></span>
+                <span class="terminal-path">ghost_fragment.js — 손상됨</span>
+              </div>
+              <div class="terminal-body">
+                <div class="line-numbers" id="line-numbers">1</div>
+                <div class="code-editor-wrap">
+                  <pre class="code-highlight" id="code-highlight"><code></code></pre>
+                  <textarea id="code-editor" spellcheck="false" autocomplete="off"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="terminal-actions">
+              <button id="btn-restore" class="pixel-btn pixel-btn-primary">기억 복원 시도</button>
+              <button id="btn-reset-code" class="pixel-btn pixel-btn-ghost">코드 초기화</button>
+            </div>
+            <p id="result-msg" class="result-msg"></p>
+            <div id="story-transition" class="story-transition hidden">
+              <p id="transition-text"></p>
+              <button id="btn-next-chapter" class="pixel-btn pixel-btn-primary">다음 추적지로</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 우측 하단: 3단계 도움말 분석기 (윈도우) -->
+        <section class="window panel-tools">
+          <div class="window-titlebar">
+            <span class="window-title">도움말 분석기 (MEM-BOT)</span>
+            <button class="window-close" title="사건 진행 중에는 닫을 수 없습니다">×</button>
+          </div>
+          <div class="window-body window-body-tools">
+            <div class="tool-buttons">
+              <button class="tool-btn" data-tier="0">
+                <span class="tool-icon">🔍</span>1단계: 위치 스캔
+              </button>
+              <button class="tool-btn" data-tier="1">
+                <span class="tool-icon">💡</span>2단계: 원인 분석
+              </button>
+              <button class="tool-btn" data-tier="2">
+                <span class="tool-icon">🛠️</span>3단계: 정답 복원
+              </button>
+            </div>
+            <div class="hint-output" id="hint-output">
+              <p class="hint-placeholder">도움말 단계를 클릭하면 탐정 보조 AI가 코드 단서를 분석합니다.</p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </section>
+
+    <!-- ============ 화면 4: 엔딩 ============ -->
+    <section id="screen-end" class="screen">
+      <p class="eyebrow">GHOST PROGRAM PURGED</p>
+      <h2 class="game-title end-title">사건 종결</h2>
+      <p class="end-text" id="end-text"></p>
+      <button id="btn-restart" class="pixel-btn pixel-btn-primary">사무소로 돌아가기</button>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
